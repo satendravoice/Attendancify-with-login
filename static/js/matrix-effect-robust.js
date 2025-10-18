@@ -1,21 +1,30 @@
-// Matrix Rain Effect for Attendancify
+// Matrix Rain Effect for Attendancify - Robust Implementation
 // This script creates a fullscreen matrix code rain effect as background
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Configuration variables
-    const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
-    const FONT_SIZE = 14;
-    const MIN_SPEED = 2;
-    const MAX_SPEED = 8;
-    const MIN_FADE = 0.02;
-    const MAX_FADE = 0.05;
-    const DENSITY = 0.97; // Probability of character change (higher = more flickering)
-    
-    // Create canvas element
-    const canvas = document.createElement('canvas');
-    canvas.id = 'matrix-canvas';
+function initMatrix() {
+    // Check if we're on a page that should have the matrix effect
     const container = document.getElementById('matrix-background');
-    container.appendChild(canvas);
+    if (!container) {
+        console.log('Matrix background container not found');
+        return;
+    }
+
+    // Configuration variables
+    const CHARS = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const FONT_SIZE = 14;
+    const MIN_SPEED = 3;
+    const MAX_SPEED = 10;
+    const MIN_FADE = 0.03;
+    const MAX_FADE = 0.07;
+    const DENSITY = 0.95; // Probability of character change (higher = more flickering)
+    
+    // Create canvas element if it doesn't exist
+    let canvas = document.getElementById('matrix-canvas');
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'matrix-canvas';
+        container.appendChild(canvas);
+    }
     
     // Set canvas dimensions to match window
     const ctx = canvas.getContext('2d');
@@ -52,8 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Draw function
     function draw() {
-        // Semi-transparent black overlay to create fading effect - reduced opacity for better visibility
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+        // Semi-transparent overlay to create fading effect - adjusted for better visibility
+        ctx.fillStyle = 'rgba(18, 18, 18, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         // Set text style
@@ -96,16 +105,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const trailOpacity = Math.max(0, 1 - (i / column.length));
                     column.chars[i].opacity = i === 0 ? headOpacity : trailOpacity * 0.5; // Reduced trail opacity
                     
-                    // Set color based on position in trail
+                    // Set color based on position in trail (Spotify green with enhanced visibility)
                     if (i === 0) {
-                        // Head character - bright green with reduced opacity
-                        ctx.fillStyle = `rgba(0, 255, 0, ${column.chars[i].opacity * 0.7})`;
+                        // Head character - bright Spotify green with enhanced visibility
+                        ctx.fillStyle = `rgba(29, 185, 84, ${Math.min(0.9, column.chars[i].opacity * 1.2)})`;
                     } else if (i < 3) {
-                        // Near head - lighter green with reduced opacity
-                        ctx.fillStyle = `rgba(0, 200, 0, ${column.chars[i].opacity * 0.5})`;
+                        // Near head - lighter Spotify green with enhanced visibility
+                        ctx.fillStyle = `rgba(29, 185, 84, ${Math.min(0.7, column.chars[i].opacity * 0.9)})`;
                     } else {
-                        // Trail - darker green with reduced opacity
-                        ctx.fillStyle = `rgba(0, 150, 0, ${column.chars[i].opacity * 0.3})`;
+                        // Trail - darker Spotify green with enhanced visibility
+                        ctx.fillStyle = `rgba(29, 185, 84, ${Math.min(0.5, column.chars[i].opacity * 0.6)})`;
                     }
                     
                     // Draw character
@@ -127,10 +136,14 @@ document.addEventListener('DOMContentLoaded', function() {
         canvas.height = window.innerHeight;
     });
     
-    // Handle theme changes (matrix only visible in dark mode)
+    // Handle theme changes (matrix visible in both modes but with different intensity)
     function updateVisibility() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
-        container.style.display = currentTheme === 'dark' ? 'block' : 'none';
+        if (currentTheme === 'dark') {
+            container.style.opacity = '0.4';
+        } else {
+            container.style.opacity = '0.2';
+        }
     }
     
     // Initial visibility check
@@ -148,4 +161,18 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(document.documentElement, {
         attributes: true
     });
-});
+    
+    // Ensure matrix effect is visible on all pages
+    container.style.display = 'block';
+}
+
+// Initialize matrix effect when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMatrix);
+} else {
+    // DOM is already loaded
+    initMatrix();
+}
+
+// Also initialize when page is fully loaded
+window.addEventListener('load', initMatrix);

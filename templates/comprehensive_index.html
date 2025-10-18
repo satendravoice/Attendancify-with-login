@@ -3,184 +3,525 @@
 {% block title %}Attendancify - Professional Attendance Management{% endblock %}
 
 {% block content %}
-<div class="home-screen-content">
-    <!-- Home screen header text -->
-    <div class="home-screen-header">
-        <h1>Attendancify</h1>
-        <p>Professional attendance management made simple</p>
-    </div>
+<!-- Hybrid Layout: Default Full View / Split Mode on Tool Click -->
+<div id="appContainer" class="app-container">
     
-    <!-- Home screen only theme switcher -->
-    <div class="home-theme-switcher">
-        <button id="home-theme-toggle" class="btn btn-sm btn-outline-light" aria-label="Toggle theme">
-            <i class="fas fa-sun"></i>
-        </button>
-    </div>
-    
-    <div class="row justify-content-center home-screen-card-grid">
-        <div class="col-md-4 mb-4">
-            <div class="card tool-card">
-                <div class="card-body">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-calendar-check fa-3x text-success mb-3"></i>
-                        <h3 class="card-title">Attendance Generator</h3>
+    <!-- DEFAULT VIEW: Full-width Tools + Key Features -->
+    <div id="defaultView" class="default-view" style="padding: 0.5rem; overflow: hidden;">
+        
+        <!-- Login Status - Only visible in default view, centered -->
+        {% if not session.user_id %}
+        <div class="d-flex justify-content-center mb-2">
+            <div class="alert alert-info d-flex align-items-center justify-content-between py-2 px-3 rounded-pill" style="max-width: fit-content;">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span class="small">You are viewing the public demo. File processing requires login.</span>
+                </div>
+                <button class="btn btn-sm btn-outline-light ms-2 py-1 px-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-sign-in-alt me-1"></i>LOGIN
+                </button>
+            </div>
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-center mb-2">
+            <div class="alert alert-success d-flex align-items-center py-1 px-2" style="font-size: 0.75rem; border-radius: var(--radius-md); max-width: fit-content;">
+                <i class="fas fa-user-check me-1" style="font-size: 0.8rem;"></i>
+                <span>You are logged in as <strong>{{ session.user_id }}</strong> ({{ session.role|title }})
+                {% set remaining = get_remaining_time(session.user_id) %}
+                {% if remaining and remaining != 'Permanent' %}
+                    • Expires in {{ remaining }}
+                {% endif %}
+                </span>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Main Tools Section -->
+        <div class="mt-1 mb-1">
+            <h2 class="text-center mb-2" style="font-size: 1.25rem; margin-top: 0.25rem;">Available Tools</h2>
+            <div class="row justify-content-center g-3" style="margin: 0 auto; max-width: 1100px;">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card tool-card h-100 clickable-tool" data-tool="attendance-generator" style="cursor: pointer; min-height: 220px;">
+                        <div class="card-body text-center d-flex flex-column" style="padding: 0.85rem 0.85rem 1.1rem;">
+                            <div class="feature-icon mx-auto mb-2" style="width: 48px; height: 48px;">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h3 class="card-title" style="font-size: 0.95rem; margin-bottom: 0.5rem;">Attendance Generator</h3>
+                            <p class="card-text" style="font-size: 0.78rem; margin-bottom: 1.15rem; line-height: 1.4;">Generate attendance from Zoom logs with custom time thresholds</p>
+                            <button class="btn btn-primary btn-sm w-100 mt-auto" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                                <i class="fas fa-cog"></i> Launch
+                            </button>
+                        </div>
                     </div>
-                    <p class="card-text">Process Zoom attendance logs and generate Excel reports with attendance status based on configurable session requirements.</p>
-                    <div class="text-center mt-4">
-                        <a href="{{ url_for('attendance_generator') }}" class="btn btn-primary">
-                            <i class="fas fa-cog me-2"></i>Use Tool
-                        </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card tool-card h-100 clickable-tool" data-tool="excel-extractor" style="cursor: pointer; min-height: 220px;">
+                        <div class="card-body text-center d-flex flex-column" style="padding: 0.85rem 0.85rem 1.1rem;">
+                            <div class="feature-icon mx-auto mb-2" style="width: 48px; height: 48px;">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <h3 class="card-title" style="font-size: 0.95rem; margin-bottom: 0.5rem;">Excel Extractor</h3>
+                            <p class="card-text" style="font-size: 0.78rem; margin-bottom: 1.15rem; line-height: 1.4;">Extract and standardize attendance data from Excel files</p>
+                            <button class="btn btn-primary btn-sm w-100 mt-auto" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                                <i class="fas fa-table"></i> Extract
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card tool-card h-100 clickable-tool" data-tool="smart-matcher" style="cursor: pointer; min-height: 220px;">
+                        <div class="card-body text-center d-flex flex-column" style="padding: 0.85rem 0.85rem 1.1rem;">
+                            <div class="feature-icon mx-auto mb-2" style="width: 48px; height: 48px;">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3 class="card-title" style="font-size: 0.95rem; margin-bottom: 0.5rem;">Smart Matcher</h3>
+                            <p class="card-text" style="font-size: 0.78rem; margin-bottom: 1.15rem; line-height: 1.4;">Match records using fuzzy algorithms with high accuracy</p>
+                            <button class="btn btn-primary btn-sm w-100 mt-auto" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                                <i class="fas fa-link"></i> Match
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card tool-card">
-                <div class="card-body">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
-                        <h3 class="card-title">Raw Excel Generator</h3>
+        
+        <!-- Key Features Section -->
+        <div class="mt-2 mb-1">
+            <h2 class="text-center mb-2" style="font-size: 1.25rem; margin-top: 0.25rem;">Key Features</h2>
+            <div class="row justify-content-center g-3" style="margin: 0 auto; max-width: 1100px;">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card h-100" style="min-height: 160px;">
+                        <div class="card-body text-center" style="padding: 0.9rem;">
+                            <div class="feature-icon mx-auto mb-2" style="width: 44px; height: 44px;">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h4 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.4rem;">Fast Processing</h4>
+                            <p class="card-text" style="font-size: 0.76rem; margin-bottom: 0; line-height: 1.4;">Process thousands of records in seconds</p>
+                        </div>
                     </div>
-                    <p class="card-text">Extract attendance data from Excel files and generate standardized raw attendance files.</p>
-                    <div class="text-center mt-4">
-                        <a href="{{ url_for('raw_excel_generator') }}" class="btn btn-primary">
-                            <i class="fas fa-cog me-2"></i>Use Tool
-                        </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card h-100" style="min-height: 160px;">
+                        <div class="card-body text-center" style="padding: 0.9rem;">
+                            <div class="feature-icon mx-auto mb-2" style="width: 44px; height: 44px;">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h4 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.4rem;">Fuzzy Matching</h4>
+                            <p class="card-text" style="font-size: 0.76rem; margin-bottom: 0; line-height: 1.4;">Handle name variations automatically</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card h-100" style="min-height: 160px;">
+                        <div class="card-body text-center" style="padding: 0.9rem;">
+                            <div class="feature-icon mx-auto mb-2" style="width: 44px; height: 44px;">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <h4 class="card-title" style="font-size: 0.9rem; margin-bottom: 0.4rem;">Excel Reports</h4>
+                            <p class="card-text" style="font-size: 0.76rem; margin-bottom: 0; line-height: 1.4;">Professional formatted export</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card tool-card">
-                <div class="card-body">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-exchange-alt fa-3x text-success mb-3"></i>
-                        <h3 class="card-title">Attendance Matching</h3>
-                    </div>
-                    <p class="card-text">Match attendance data from different sources using intelligent name matching algorithms.</p>
-                    <div class="text-center mt-4">
-                        <a href="{{ url_for('attendance_matching') }}" class="btn btn-primary">
-                            <i class="fas fa-cog me-2"></i>Use Tool
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Combined About & Usage Section -->
-    <div class="card mt-5">
-        <div class="card-body">
-            <h2 class="text-center mb-4">About Attendancify</h2>
-            
-            <div class="row mb-4">
-                <div class="col-md-4 text-center mb-4">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-bolt fa-2x text-success"></i>
-                    </div>
-                    <h4>Fast Processing</h4>
-                    <p class="text-muted">Quickly process large attendance files with our optimized algorithms.</p>
-                </div>
-                <div class="col-md-4 text-center mb-4">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-sync-alt fa-2x text-success"></i>
-                    </div>
-                    <h4>Smart Matching</h4>
-                    <p class="text-muted">Intelligent name matching using fuzzy algorithms for accurate results.</p>
-                </div>
-                <div class="col-md-4 text-center mb-4">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-file-export fa-2x text-success"></i>
-                    </div>
-                    <h4>Export Ready</h4>
-                    <p class="text-muted">Generate clean, structured Excel reports ready for further analysis.</p>
-                </div>
-            </div>
-            
-            <hr class="my-4">
-            
-            <h3 class="text-center mb-4">How to Use Attendancify</h3>
-            <div class="row text-center">
-                <div class="col-md-4 mb-4">
-                    <div class="usage-step-card">
-                        <div class="usage-step-icon mb-3">
-                            <i class="fas fa-calendar-check fa-2x text-success"></i>
-                        </div>
-                        <div class="usage-step-number">1</div>
-                        <h5>Attendance Generator</h5>
-                        <p class="mb-0">Upload Zoom attendance reports and configure session requirements to generate initial attendance files.</p>
-                        <div class="usage-step-note mt-2">
-                            <i class="fas fa-exclamation-circle text-warning me-1"></i>
-                            <small>Human verification required</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="usage-step-card">
-                        <div class="usage-step-icon mb-3">
-                            <i class="fas fa-file-excel fa-2x text-success"></i>
-                        </div>
-                        <div class="usage-step-number">2</div>
-                        <h5>Raw Excel Generator</h5>
-                        <p class="mb-0">Extract and standardize attendance data from various Excel formats for consistency.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="usage-step-card">
-                        <div class="usage-step-icon mb-3">
-                            <i class="fas fa-exchange-alt fa-2x text-success"></i>
-                        </div>
-                        <div class="usage-step-number">3</div>
-                        <h5>Attendance Matching</h5>
-                        <p class="mb-0">Match attendance records from different sources using intelligent name matching algorithms.</p>
-                        <div class="usage-step-note mt-2">
-                            <i class="fas fa-exclamation-circle text-warning me-1"></i>
-                            <small>Human verification required</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p class="text-center mb-0 text-muted">
+        
+        <div class="text-center mt-1" style="margin-bottom: 0.25rem;">
+            <p class="text-muted" style="font-size: 0.68rem; margin-bottom: 0;">
                 <i class="fas fa-info-circle me-1"></i>
-                This is an AI-based tool. Please verify results as AI can make mistakes.
+                AI-powered tool - Verify results for accuracy
             </p>
+        </div>
+    </div>
+    
+    <!-- SPLIT MODE: Sidebar + Tool Panel (Hidden by default) -->
+    <div id="splitView" class="split-view" style="display: none;">
+        
+        <!-- Mobile Menu Toggle Button (only visible on mobile) -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Mobile Sidebar Overlay (for closing sidebar when clicking outside) -->
+        <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+        
+        <!-- Left Sidebar - Compact Tool Gallery -->
+        <div id="toolSidebar" class="tool-sidebar-split">
+            <!-- Close Split Mode Button -->
+            <button class="btn btn-sm w-100 mb-3" id="closeSplitMode" style="background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary);">
+                <i class="fas fa-arrow-left me-2"></i>Back to All Tools
+            </button>
+            
+            <!-- Login Status REMOVED from Split View -->
+            
+            <h6 class="mb-3" style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Quick Switch</h6>
+            
+            <!-- Compact Tool List -->
+            <div class="sidebar-tool-list-split">
+                <div class="sidebar-tool-item" data-tool="attendance-generator">
+                    <div class="d-flex align-items-center">
+                        <div class="tool-icon-small me-2">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="tool-name">Attendance Generator</div>
+                            <div class="tool-desc">Zoom log processing</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-tool-item" data-tool="excel-extractor">
+                    <div class="d-flex align-items-center">
+                        <div class="tool-icon-small me-2">
+                            <i class="fas fa-file-excel"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="tool-name">Excel Extractor</div>
+                            <div class="tool-desc">Data extraction</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-tool-item" data-tool="smart-matcher">
+                    <div class="d-flex align-items-center">
+                        <div class="tool-icon-small me-2">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="tool-name">Smart Matcher</div>
+                            <div class="tool-desc">Record matching</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Login Button at Bottom (if not logged in) -->
+            {% if not session.user_id %}
+            <div class="mt-auto pt-3" style="border-top: 1px solid var(--border-color);">
+                <button class="btn btn-primary w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login Required
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Right Panel - Tool Interface -->
+        <div id="toolPanel" class="tool-panel-split">
+            <!-- Tool content will be injected here -->
         </div>
     </div>
 </div>
 
 <script>
-    // Add home screen theme switcher functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const homeThemeToggle = document.getElementById('home-theme-toggle');
-        if (homeThemeToggle) {
-            // Copy the theme switcher functionality from theme-switcher.js
-            homeThemeToggle.addEventListener('click', function() {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                
-                // Update icon
-                const icon = this.querySelector('i');
-                if (icon) {
-                    icon.classList.toggle('fa-sun');
-                    icon.classList.toggle('fa-moon');
-                }
-                
-                // Save preference
-                localStorage.setItem('theme', newTheme);
-            });
-            
-            // Set initial icon based on current theme
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentTheme === 'light') {
-                const icon = homeThemeToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-            }
-        }
+// Hybrid Layout: Default View + Split Mode
+document.addEventListener('DOMContentLoaded', function() {
+    const defaultView = document.getElementById('defaultView');
+    const splitView = document.getElementById('splitView');
+    const toolPanel = document.getElementById('toolPanel');
+    const closeSplitModeBtn = document.getElementById('closeSplitMode');
+    const clickableTools = document.querySelectorAll('.clickable-tool');
+    const sidebarItems = document.querySelectorAll('.sidebar-tool-item');
+    
+    // Tool Templates (embedded HTML for each tool)
+    const toolTemplates = {
+        'attendance-generator': `
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0;">
+                    <i class="fas fa-calendar-check me-2" style="color: var(--primary-accent);"></i>
+                    Attendance Generator
+                </h3>
+                <button onclick="closeSplitView()" class="btn" style="background: var(--error-color); color: white; padding: 0.6rem 1.2rem; font-weight: 600;">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body p-4">
+                    <!-- Login status removed from Attendance Generator tool -->
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <h5 class="mb-3">Upload Zoom Session Logs</h5>
+                            <form method="POST" action="{{ url_for('upload_attendance_file') }}" enctype="multipart/form-data">
+                                <input type="hidden" name="mode" value="multiple">
+                                <div class="mb-3">
+                                    <label class="form-label">Select Zoom Log Files</label>
+                                    <input class="form-control" type="file" name="csv_files" accept=".csv,.xlsx" multiple {% if not session.user_id %}disabled{% endif %}>
+                                    <div class="form-text">Upload CSV or Excel format files</div>
+                                </div>
+                                <div class="alert alert-warning py-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <small>Human verification required for this tool</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="fas fa-upload me-2"></i>Upload and Configure
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card h-100" style="background: var(--bg-elevated);">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-info-circle me-2"></i>How to Use</h5>
+                                    <p class="text-muted">Upload your Zoom attendance file and configure session settings.</p>
+                                    <h6>File Format Requirements</h6>
+                                    <ul style="font-size: 0.9rem;">
+                                        <li>Name (First Name)</li>
+                                        <li>User Name (Display Name)</li>
+                                        <li>User Email</li>
+                                        <li>Join Time & Leave Time</li>
+                                        <li>Duration (Minutes)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        'excel-extractor': `
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0;">
+                    <i class="fas fa-file-excel me-2" style="color: var(--success-accent);"></i>
+                    Excel Extractor
+                </h3>
+                <button onclick="closeSplitView()" class="btn" style="background: var(--error-color); color: white; padding: 0.6rem 1.2rem; font-weight: 600;">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body p-4">
+                    <!-- Login status removed from Excel Extractor tool -->
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <h5 class="mb-3">Upload Final Attendance Files</h5>
+                            <form method="POST" action="{{ url_for('process_raw_excel') }}" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label">Select Attendance Files (.xlsx)</label>
+                                    <input class="form-control" type="file" name="excel_files" accept=".xlsx" multiple {% if not session.user_id %}disabled{% endif %}>
+                                    <div class="form-text">Upload files from Attendance Generator</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="fas fa-cogs me-2"></i>Process Files
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card h-100" style="background: var(--bg-elevated);">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-info-circle me-2"></i>How to Use</h5>
+                                    <p class="text-muted">Upload Excel file to extract and standardize attendance data.</p>
+                                    <h6>File Format Requirements</h6>
+                                    <ul style="font-size: 0.9rem;">
+                                        <li>Sheet named "Attendance"</li>
+                                        <li>Column with participant Names</li>
+                                        <li>Session columns with P/A values</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        'smart-matcher': `
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0;">
+                    <i class="fas fa-exchange-alt me-2" style="color: var(--secondary-accent);"></i>
+                    Smart Matcher
+                </h3>
+                <button onclick="closeSplitView()" class="btn" style="background: var(--error-color); color: white; padding: 0.6rem 1.2rem; font-weight: 600;">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body p-4">
+                    <!-- Login status removed from Smart Matcher tool -->
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <h5 class="mb-3">Upload Files for Matching</h5>
+                            <form method="POST" action="{{ url_for('process_attendance_matching') }}" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label">Master List Files</label>
+                                    <input class="form-control" type="file" name="master_files" accept=".csv,.xlsx" multiple {% if not session.user_id %}disabled{% endif %}>
+                                    <div class="form-text">Upload master student lists</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Raw Attendance Files</label>
+                                    <input class="form-control" type="file" name="raw_files" accept=".csv,.xlsx" multiple {% if not session.user_id %}disabled{% endif %}>
+                                    <div class="form-text">Upload raw attendance files</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Output Format</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="output_format" value="xlsx" checked>
+                                            <label class="form-check-label">Excel (.xlsx)</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="output_format" value="csv">
+                                            <label class="form-check-label">CSV (.csv)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-warning py-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <small>Human verification required</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="fas fa-exchange-alt me-2"></i>Match and Process
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card h-100" style="background: var(--bg-elevated);">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-info-circle me-2"></i>How to Use</h5>
+                                    <p class="text-muted">Match attendance records using intelligent fuzzy matching.</p>
+                                    <h6>File Requirements</h6>
+                                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Master List:</strong></p>
+                                    <ul style="font-size: 0.85rem; margin-bottom: 1rem;">
+                                        <li>Column A: Email</li>
+                                        <li>Column B: Participant Name</li>
+                                    </ul>
+                                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Raw Attendance:</strong></p>
+                                    <ul style="font-size: 0.85rem;">
+                                        <li>Name column</li>
+                                        <li>Session columns with P/A values</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+    };
+    
+    // Click handlers for tool cards in default view
+    clickableTools.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const toolId = this.getAttribute('data-tool');
+            enterSplitMode(toolId);
+        });
     });
+    
+    // Click handlers for sidebar items in split view
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const toolId = this.getAttribute('data-tool');
+            switchTool(toolId);
+        });
+    });
+    
+    // Close split mode button
+    if (closeSplitModeBtn) {
+        closeSplitModeBtn.addEventListener('click', function() {
+            closeSplitView();
+        });
+    }
+    
+    // ========== MOBILE MENU FUNCTIONALITY ==========
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileSidebarOverlay = document.getElementById('mobileSidebarOverlay');
+    const toolSidebar = document.getElementById('toolSidebar');
+    
+    // Toggle mobile sidebar
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toolSidebar.classList.toggle('mobile-active');
+            mobileSidebarOverlay.classList.toggle('active');
+        });
+    }
+    
+    // Close sidebar when clicking overlay
+    if (mobileSidebarOverlay) {
+        mobileSidebarOverlay.addEventListener('click', function() {
+            toolSidebar.classList.remove('mobile-active');
+            mobileSidebarOverlay.classList.remove('active');
+        });
+    }
+    
+    // Close sidebar when switching tools on mobile
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Close mobile sidebar after selecting a tool
+            if (window.innerWidth <= 768) {
+                toolSidebar.classList.remove('mobile-active');
+                mobileSidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+    
+    // Close sidebar when clicking "Back to All Tools" on mobile
+    if (closeSplitModeBtn) {
+        closeSplitModeBtn.addEventListener('click', function() {
+            toolSidebar.classList.remove('mobile-active');
+            mobileSidebarOverlay.classList.remove('active');
+        });
+    }
+    
+    // Enter split mode from default view
+    function enterSplitMode(toolId) {
+        // Fade out default view
+        defaultView.style.opacity = '0';
+        
+        setTimeout(() => {
+            defaultView.style.display = 'none';
+            splitView.style.display = 'flex';
+            
+            // Load tool content
+            loadTool(toolId);
+            
+            // Fade in split view
+            splitView.style.opacity = '0';
+            setTimeout(() => {
+                splitView.style.opacity = '1';
+            }, 50);
+        }, 300);
+    }
+    
+    // Load tool into panel
+    function loadTool(toolId) {
+        toolPanel.innerHTML = toolTemplates[toolId] || '<p>Tool content not found</p>';
+        
+        // Highlight active sidebar item
+        sidebarItems.forEach(item => {
+            if (item.getAttribute('data-tool') === toolId) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+        
+        // Scroll to top
+        toolPanel.scrollTop = 0;
+    }
+    
+    // Switch tools in split mode
+    function switchTool(toolId) {
+        toolPanel.style.opacity = '0';
+        
+        setTimeout(() => {
+            loadTool(toolId);
+            toolPanel.style.opacity = '1';
+        }, 200);
+    }
+    
+    // Close split view and return to default
+    window.closeSplitView = function() {
+        splitView.style.opacity = '0';
+        
+        setTimeout(() => {
+            splitView.style.display = 'none';
+            defaultView.style.display = 'block';
+            
+            // Fade in default view
+            defaultView.style.opacity = '0';
+            setTimeout(() => {
+                defaultView.style.opacity = '1';
+            }, 50);
+        }, 300);
+    };
+});
 </script>
 {% endblock %}
 

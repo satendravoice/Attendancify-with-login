@@ -4,52 +4,44 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
+    <div class="col-12">
         <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="fas fa-cog"></i> Configure Attendance Sessions</h4>
-                <p class="mb-0 text-white-50">Set up session times and attendance requirements</p>
-            </div>
-            <div class="card-body">
-                <div class="step-indicator">
-                    <div class="step completed">
-                        <div class="step-circle">1</div>
-                        <div>Upload CSV</div>
-                    </div>
-                    <div class="step active">
-                        <div class="step-circle">2</div>
-                        <div>Configure Sessions</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-circle">3</div>
-                        <div>Download Results</div>
+            <div class="card-header" style="background: linear-gradient(135deg, var(--primary-accent) 0%, var(--secondary-accent) 100%); color: white; padding: 1rem 1.5rem;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0"><i class="fas fa-cog me-2"></i>Configure Attendance Sessions</h4>
+                        <p class="mb-0" style="font-size: 0.85rem; opacity: 0.9;">Set up session times and attendance requirements</p>
                     </div>
                 </div>
-
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> 
-                    Configure the session times and minimum attendance requirements for each session.
+            </div>
+            <div class="card-body" style="padding: 1.5rem;">
+                <div class="alert alert-info mb-4" style="border-left: 4px solid var(--info-color); background: rgba(0, 217, 255, 0.1);">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Instructions:</strong> Configure each session with clear start/end times and minimum attendance duration.
                 </div>
 
                 <form id="sessionForm" method="POST" action="{{ url_for('process_attendance') }}">
                     <input type="hidden" id="session_row_count" name="session_row_count" value="0">
                     
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <button type="button" id="addSessionBtn" class="btn btn-success">
-                            <i class="fas fa-plus"></i> Add Session
+                            <i class="fas fa-plus-circle me-2"></i>Add New Session
                         </button>
+                        <span class="ms-3 text-muted" style="font-size: 0.85rem;">
+                            <i class="fas fa-lightbulb me-1"></i>Tip: You can add multiple sessions for batch processing
+                        </span>
                     </div>
 
-                    <div id="sessionsContainer">
+                    <div id="sessionsContainer" style="max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
                         <!-- Session rows will be added here dynamically -->
                     </div>
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="{{ url_for('attendance_generator') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back
+                    <div class="d-flex justify-content-between align-items-center mt-4 pt-3" style="border-top: 2px solid var(--border-color);">
+                        <a href="{{ url_for('attendance_generator') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back
                         </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-play-circle"></i> Process Attendance
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Process Attendance
                         </button>
                     </div>
                 </form>
@@ -73,35 +65,36 @@
         const container = document.getElementById('sessionsContainer');
         const sessionDiv = document.createElement('div');
         sessionDiv.className = 'card mb-3 session-item';
+        sessionDiv.style.cssText = 'border-left: 4px solid var(--primary-accent); box-shadow: var(--shadow-sm);';
         sessionDiv.innerHTML = `
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Session ${sessionIndex + 1}</span>
-                <button type="button" class="btn btn-danger btn-sm remove-session">
-                    <i class="fas fa-trash"></i> Remove
+            <div class="card-header d-flex justify-content-between align-items-center" style="background: var(--bg-elevated); padding: 0.75rem 1rem;">
+                <span style="font-weight: 600; color: var(--primary-accent);"><i class="fas fa-calendar-day me-2"></i>Session ${sessionIndex + 1}</span>
+                <button type="button" class="btn btn-danger btn-sm remove-session" style="padding: 0.25rem 0.5rem;">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="card-body">
-                <div class="row">
+            <div class="card-body" style="padding: 1rem;">
+                <div class="row g-3">
                     ${mode === 'multiple' ? `
-                    <div class="col-md-3 mb-3">
-                        <label for="file_name_${sessionIndex}" class="form-label">File</label>
-                        <select class="form-select" id="file_name_${sessionIndex}" name="file_name_${sessionIndex}" required>
-                            <option value="">Select a file</option>
+                    <div class="col-md-12 mb-2">
+                        <label for="file_name_${sessionIndex}" class="form-label" style="font-weight: 600; font-size: 0.9rem;"><i class="fas fa-file me-1"></i>Select File</label>
+                        <select class="form-select form-select-lg" id="file_name_${sessionIndex}" name="file_name_${sessionIndex}" required style="border: 2px solid var(--border-color); font-size: 0.95rem;">
+                            <option value="">Choose a file...</option>
                             ${fileNames.map(name => `<option value="${name}">${name}</option>`).join('')}
                         </select>
                     </div>
                     ` : ''}
-                    <div class="col-md-${mode === 'multiple' ? '3' : '4'} mb-3">
-                        <label for="start_time_${sessionIndex}" class="form-label">Start Time</label>
-                        <input type="datetime-local" class="form-control" id="start_time_${sessionIndex}" name="start_time_${sessionIndex}" required>
+                    <div class="col-md-4">
+                        <label for="start_time_${sessionIndex}" class="form-label" style="font-weight: 600; font-size: 0.9rem;"><i class="fas fa-clock me-1"></i>Start Time</label>
+                        <input type="datetime-local" class="form-control form-control-lg" id="start_time_${sessionIndex}" name="start_time_${sessionIndex}" required style="border: 2px solid var(--border-color); font-size: 0.95rem; padding: 0.6rem;">
                     </div>
-                    <div class="col-md-${mode === 'multiple' ? '3' : '4'} mb-3">
-                        <label for="end_time_${sessionIndex}" class="form-label">End Time</label>
-                        <input type="datetime-local" class="form-control" id="end_time_${sessionIndex}" name="end_time_${sessionIndex}" required>
+                    <div class="col-md-4">
+                        <label for="end_time_${sessionIndex}" class="form-label" style="font-weight: 600; font-size: 0.9rem;"><i class="fas fa-clock me-1"></i>End Time</label>
+                        <input type="datetime-local" class="form-control form-control-lg" id="end_time_${sessionIndex}" name="end_time_${sessionIndex}" required style="border: 2px solid var(--border-color); font-size: 0.95rem; padding: 0.6rem;">
                     </div>
-                    <div class="col-md-${mode === 'multiple' ? '3' : '4'} mb-3">
-                        <label for="time_required_${sessionIndex}" class="form-label">Minimum Time Required (minutes)</label>
-                        <input type="number" class="form-control" id="time_required_${sessionIndex}" name="time_required_${sessionIndex}" min="0" step="0.1" value="30" required>
+                    <div class="col-md-4">
+                        <label for="time_required_${sessionIndex}" class="form-label" style="font-weight: 600; font-size: 0.9rem;"><i class="fas fa-stopwatch me-1"></i>Min. Duration (minutes)</label>
+                        <input type="number" class="form-control form-control-lg" id="time_required_${sessionIndex}" name="time_required_${sessionIndex}" min="0" step="0.1" value="30" required style="border: 2px solid var(--border-color); font-size: 0.95rem; padding: 0.6rem;">
                     </div>
                 </div>
             </div>
@@ -110,8 +103,10 @@
         
         // Add event listener to remove button
         sessionDiv.querySelector('.remove-session').addEventListener('click', function() {
-            container.removeChild(sessionDiv);
-            updateSessionCount();
+            if (confirm('Remove this session?')) {
+                container.removeChild(sessionDiv);
+                updateSessionCount();
+            }
         });
         
         sessionIndex++;
