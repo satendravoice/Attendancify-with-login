@@ -4,14 +4,14 @@
 
 ![Attendancify Banner](https://img.shields.io/badge/Attendancify-Intelligent_Attendance_Automation-6366f1?style=for-the-badge)
 
-[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-2.3.2-000000?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![![Flask](https://img.shields.io/badge/Flask-2.3.2-000000?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **Automated, Accurate, and Intelligent Attendance Management for Modern Education**
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Demo](#-live-demo) • [Documentation](#-documentation)
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Live Demo](#-live-demo) • [Documentation](#-documentation)
 
 </div>
 
@@ -27,8 +27,8 @@
 - [Usage Guide](#-usage-guide)
 - [Tools Overview](#-tools-overview)
 - [File Formats](#-file-formats)
+- [Live Demo](#-live-demo)
 - [Deployment](#-deployment)
-- [Screenshots](#-screenshots)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Support](#-support)
@@ -45,327 +45,286 @@
 - ⏱️ **Save Time**: Automate hours of manual attendance tracking
 - 🎯 **Precision**: Second-level accuracy in attendance calculation
 - 🤖 **Smart Matching**: AI-powered fuzzy name matching handles variations
-- 📊 **Comprehensive Reports**: Detailed Excel reports with statistics
-- 🔐 **Secure**: Role-based access control with user management
-- 🎨 **Modern UI**: Beautiful, responsive interface with dark/light themes
+- 📊 **Comprehensive**: Supports Zoom, manual lists, and multiple data formats
+- 🔐 **Secure**: Login-protected dashboard with user management
 
 ---
 
 ## ✨ Features
 
-### 🎯 Core Functionality
+### 🎯 Core Capabilities
 
-- **🔄 Automatic Attendance Generation**
-  - Process Zoom CSV logs instantly
-  - Calculate attendance based on session duration
-  - Customizable time thresholds per session
-  - Support for multiple sessions and batch processing
+| Feature | Description |
+|---------|-------------|
+| 🔐 **Secure Authentication** | Login-protected dashboard with user management |
+| 📱 **Responsive Design** | Works seamlessly on desktop, tablet, and mobile |
+| 📊 **Advanced Analytics** | Visualize attendance patterns and trends |
+| 🔄 **Batch Processing** | Handle multiple sessions simultaneously |
+| 📈 **Real-time Updates** | Live processing status and progress tracking |
+| 🎨 **Modern UI** | Clean, intuitive interface built with Bootstrap 5 |
 
-- **⚡ Second-Level Precision**
-  - Track participant presence down to the second
-  - Eliminate manual calculation errors
-  - Configurable minimum time requirements
+### 🛠️ Tool Suite
 
-- **🔍 Intelligent Name Matching**
-  - Fuzzy matching algorithm using RapidFuzz
-  - Handles name variations, nicknames, spelling differences
-  - Cross-reference with master student lists
-  - Identify absentees automatically
+#### 1. 📝 Format Converter
+- Convert Zoom attendance reports to standard Excel format
+- Clean and normalize participant names
+- Handle multiple file uploads
 
-- **📈 Comprehensive Reporting**
-  - Detailed Excel reports with multiple sheets
-  - Statistics: total attendees, present/absent counts
-  - Session-wise breakdowns
-  - Timestamps and duration tracking
+#### 2. ⏱️ Duration Calculator
+- Calculate precise attendance duration for each participant
+- Second-level accuracy
+- Support for multiple join/leave cycles
 
-### 🔐 Advanced Features
+#### 3. 🤝 Smart Name Merger
+- AI-powered fuzzy matching for name variations
+- Configurable similarity thresholds
+- Handles typos, spacing, and formatting differences
 
-- **User Authentication & Authorization**
-  - Secure login system with password hashing
-  - Role-based access (Superadmin, Admin, User)
-  - Forced password change on first login
-  - Session management with token validation
-
-- **User Management**
-  - Create and manage user accounts
-  - Set account expiration dates
-  - View user passwords (superadmin only)
-  - Assign roles and permissions
-
-- **Modern UI/UX**
-  - Responsive design (mobile, tablet, desktop)
-  - Dark/Light theme toggle
-  - Animated particle background
-  - Smooth transitions and animations
-  - Professional gradient designs
+#### 4. 🎯 Attendance Matcher
+- Match Zoom logs against enrolled student lists
+- Flag missing/extra participants
+- Generate comprehensive attendance reports
 
 ---
 
-## 🛠️ Tech Stack
+## 💻 Tech Stack
 
-| Technology | Purpose | Version |
-|------------|---------|----------|
-| **Python** | Backend Language | 3.9+ |
-| **Flask** | Web Framework | 2.3.2 |
-| **Pandas** | Data Processing | 1.5.3+ |
-| **OpenPyXL** | Excel Handling | 3.1.2 |
-| **RapidFuzz** | Fuzzy Matching | 3.4.0 |
-| **Bootstrap** | UI Framework | 5.3.0 |
-| **Font Awesome** | Icons | 6.0.0 |
+### Backend
+- **Python 3.9+**: Core programming language
+- **Flask 2.3.2**: Lightweight web framework
+- **Pandas**: Data manipulation and analysis
+- **RapidFuzz**: Fuzzy string matching
+- **Werkzeug**: Security utilities
+
+### Frontend
+- **Bootstrap 5.3**: Responsive UI framework
+- **JavaScript/jQuery**: Interactive elements
+- **HTML5/CSS3**: Modern web standards
+
+### Storage
+- JSON-based user authentication
+- Excel/CSV file handling
+- Temporary file management
 
 ---
 
-## 🚀 Installation
+## 📦 Installation
 
 ### Prerequisites
 
-- **Python 3.9 or higher** ([Download](https://www.python.org/downloads/))
-- **pip** package manager
-- **Git** ([Download](https://git-scm.com/downloads/))
+```bash
+# Python 3.9 or higher
+python --version
 
-### Step-by-Step Setup
+# pip package manager
+pip --version
+```
 
-#### 1️⃣ Clone the Repository
+### Step 1: Clone the Repository
 
 ```bash
 git clone https://github.com/satendravoice/Attendancify-with-login.git
 cd Attendancify-with-login
 ```
 
-#### 2️⃣ Create Virtual Environment
+### Step 2: Create Virtual Environment
 
-**Windows:**
 ```bash
+# Windows
 python -m venv venv
 venv\Scripts\activate
-```
 
-**Linux/Mac:**
-```bash
+# Linux/Mac
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-#### 3️⃣ Install Dependencies
+### Step 3: Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 4️⃣ Run the Application
+### Step 4: Run the Application
 
 ```bash
-python comprehensive_app.py
+python main.py
 ```
 
-#### 5️⃣ Access the Application
-
-Open your browser and navigate to:
-```
-http://localhost:5000
-```
+The application will start at `http://localhost:5000`
 
 ---
 
 ## 🔑 Default Credentials
 
-### Superadmin Account
+**⚠️ IMPORTANT: Change these immediately after first login!**
 
 ```
-Email: superadmin@attendancify.com
-Password: admin
+Username: admin
+Password: admin123
 ```
 
-> ⚠️ **Important**: You will be **required to change the password** upon first login for security.
-
-### User Roles
-
-| Role | Permissions |
-|------|-------------|
-| **Superadmin** | Full access: manage users, view passwords, process attendance |
-| **Admin** | Create users, manage attendance, process files |
-| **User** | Process attendance files only (limited access) |
+### Change Password Steps:
+1. Login with default credentials
+2. Navigate to user management
+3. Update password immediately
+4. Store new credentials securely
 
 ---
 
 ## 📖 Usage Guide
 
-### 🎯 Tool 1: Attendance Generator
+### 1. Login
+1. Navigate to `http://localhost:5000`
+2. Enter credentials
+3. Access the main dashboard
 
-**Purpose**: Process Zoom attendance logs and generate detailed reports
+### 2. Format Converter
+1. Select "Format Converter" tool
+2. Upload Zoom attendance CSV/Excel file
+3. Click "Convert"
+4. Download formatted Excel file
 
-#### Steps:
+### 3. Duration Calculator
+1. Select "Duration Calculator" tool
+2. Upload formatted attendance file
+3. Process file
+4. Download duration report
 
-1. **Login** to your account
-2. Click on **"Attendance Generator"** tool
-3. **Upload** Zoom CSV file(s)
-   - Single file mode: Upload one CSV
-   - Multiple files mode: Upload multiple CSVs for batch processing
-4. **Configure Sessions**:
-   - Set session start/end times
-   - Define minimum attendance time (in minutes)
-   - Add multiple sessions if needed
-5. Click **"Process Attendance"**
-6. **Download** automatically starts with success message
-7. Review the Excel report with attendance data
+### 4. Name Merger
+1. Select "Name Merger" tool
+2. Upload attendance file
+3. Set similarity threshold (default: 80%)
+4. Review merged names
+5. Download cleaned file
 
-#### Output:
-- Excel file with attendance status (P/A)
-- Session-wise attendance breakdown
-- Statistics and summary
-
----
-
-### 📊 Tool 2: Raw Excel Generator
-
-**Purpose**: Extract and standardize attendance data from Excel files
-
-#### Steps:
-
-1. Navigate to **"Raw Excel Generator"**
-2. **Upload** Excel files containing attendance data
-3. System automatically extracts and standardizes data
-4. **Download** clean, structured Excel output
-
-#### Use Case:
-- Convert mixed-format Excel files to standard format
-- Extract attendance columns from complex spreadsheets
-- Prepare data for matching tool
+### 5. Attendance Matcher
+1. Select "Attendance Matcher" tool
+2. Upload Zoom attendance log
+3. Upload enrolled student list
+4. Process matching
+5. Download final report with:
+   - Present students
+   - Absent students
+   - Extra participants
+   - Duration details
 
 ---
 
-### 🔄 Tool 3: Attendance Matching
+## 🔧 Tools Overview
 
-**Purpose**: Match raw attendance data with master student lists
+### Format Converter
 
-#### Steps:
+**Input**: Raw Zoom attendance CSV/Excel  
+**Output**: Standardized Excel format
 
-1. Go to **"Attendance Matching"** tool
-2. **Upload Master List** (Excel file with enrolled students)
-3. **Upload Raw Attendance File** (processed attendance data)
-4. System uses fuzzy matching to cross-reference
-5. **Download** matched report with:
-   - Matched students with attendance status
-   - Unmatched entries (for review)
-   - Summary sheet
+**Features**:
+- Removes duplicate entries
+- Standardizes column names
+- Cleans participant data
 
-#### Benefits:
-- Identify absent students from enrolled list
-- Handle name variations automatically
-- Generate comprehensive class reports
+### Duration Calculator
+
+**Input**: Formatted attendance file  
+**Output**: Duration report
+
+**Features**:
+- Calculates total attendance time
+- Handles multiple join/leave cycles
+- Provides second-level precision
+
+### Smart Name Merger
+
+**Input**: Attendance file with name variations  
+**Output**: Merged and cleaned file
+
+**Features**:
+- AI-powered fuzzy matching
+- Configurable similarity threshold
+- Preview before merging
+
+### Attendance Matcher
+
+**Input**: Zoom log + Student list  
+**Output**: Comprehensive attendance report
+
+**Features**:
+- Identifies present/absent students
+- Flags unauthorized participants
+- Generates detailed reports
 
 ---
 
-## 📁 File Formats
+## 📄 File Formats
 
-### Zoom CSV Format (Required)
+### Input Files
 
+#### Zoom Attendance File
 ```csv
-Name (Original Name),User Name,User Email,Join Time,Leave Time,Duration (Minutes)
-John Doe,jdoe,john@example.com,12/01/2024 10:00:00,12/01/2024 11:30:00,90
+Name,Email,Join Time,Leave Time,Duration (Minutes)
+John Doe,john@example.com,2024-01-15 10:00:00,2024-01-15 11:30:00,90
 ```
 
-**Required Columns:**
-- `Name (Original Name)` or `User Name`: Participant name
-- `User Email`: Email address
-- `Join Time`: Session entry timestamp
-- `Leave Time`: Session exit timestamp
-- `Duration (Minutes)`: Time spent in session
-
-### Master List Format (Excel)
-
-```
-| Email              | Participant Name | Student ID |
-|--------------------|------------------|------------|
-| john@example.com   | John Doe         | 12345      |
-| jane@example.com   | Jane Smith       | 12346      |
+#### Student List File
+```csv
+Student Name,Student ID,Email
+John Doe,12345,john@example.com
 ```
 
-**Required Columns:**
-- `Email` or `Email_id`: Student email
-- `Participant Name` or `Name`: Student full name
+### Output Files
+
+#### Attendance Report
+```csv
+Student Name,Status,Duration,Join Time,Leave Time
+John Doe,Present,01:30:00,10:00:00,11:30:00
+```
 
 ---
 
-## 🌐 Deployment
+## 🎯 Live Demo
 
-### Deploy on PythonAnywhere (Free)
+**Try Attendancify online without any installation!**
 
-#### 1. Create Account
-- Sign up at [PythonAnywhere](https://www.pythonanywhere.com/)
-- Choose free tier (sufficient for small to medium use)
+🔗 **Live Application**: [https://zoomattendancify.pythonanywhere.com/](https://zoomattendancify.pythonanywhere.com/)
 
-#### 2. Upload Code
-```bash
-# In PythonAnywhere Bash console
-git clone https://github.com/satendravoice/Attendancify-with-login.git
-cd Attendancify-with-login
-pip install --user -r requirements.txt
+**Demo Credentials**:
+```
+Username: admin
+Password: admin123
 ```
 
-#### 3. Configure WSGI
-- Go to **Web** tab
-- Add new web app (Flask, Python 3.9+)
-- Edit WSGI configuration file:
-```python
-import sys
-path = '/home/yourusername/Attendancify-with-login'
-if path not in sys.path:
-    sys.path.append(path)
-
-from comprehensive_app import app as application
-```
-
-#### 4. Set Static Files
-- **URL**: `/static/`
-- **Directory**: `/home/yourusername/Attendancify-with-login/static/`
-
-#### 5. Reload Web App
-- Click **Reload** button
-- Access at: `https://yourusername.pythonanywhere.com`
-
-### Deploy on Other Platforms
-
-<details>
-<summary><b>Heroku</b></summary>
-
-1. Create `Procfile`:
-```
-web: gunicorn comprehensive_app:app
-```
-
-2. Add `gunicorn` to requirements.txt:
-```bash
-echo "gunicorn" >> requirements.txt
-```
-
-3. Deploy:
-```bash
-heroku create your-app-name
-git push heroku main
-```
-</details>
-
-<details>
-<summary><b>AWS/Azure/Google Cloud</b></summary>
-
-Follow standard Flask deployment guides for your chosen platform.
-</details>
+**Note**: This is a demo environment. Your data is not permanently stored.
 
 ---
 
-## 🎨 Screenshots
+## 🚀 Deployment
 
-### Login Page
-*Modern, secure login with gradient design and particle animations*
+### Local Deployment
+```bash
+python main.py
+```
 
-### Dashboard
-*Three powerful tools in a clean, intuitive interface*
+### Production Deployment
 
-### Attendance Processing
-*Simple upload, configure, and download workflow*
+#### Heroku
+```bash
+heroku create attendancify-app
+git push heroku master
+heroku open
+```
 
-> *Screenshots will be added soon*
+#### PythonAnywhere
+1. Create PythonAnywhere account
+2. Upload project files
+3. Configure WSGI
+4. Set environment variables
+5. Reload web app
+
+#### Docker
+```bash
+docker build -t attendancify .
+docker run -p 5000:5000 attendancify
+```
 
 ---
 
@@ -373,55 +332,48 @@ Follow standard Flask deployment guides for your chosen platform.
 
 Contributions are welcome! Here's how you can help:
 
-### Getting Started
-
 1. **Fork** the repository
-2. **Clone** your fork:
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/Attendancify-with-login.git
-   ```
-3. Create a **feature branch**:
+2. **Create** a feature branch
    ```bash
    git checkout -b feature/AmazingFeature
    ```
-4. Make your changes and **commit**:
+3. **Commit** your changes
    ```bash
    git commit -m 'Add some AmazingFeature'
    ```
-5. **Push** to your fork:
+4. **Push** to the branch
    ```bash
    git push origin feature/AmazingFeature
    ```
-6. Open a **Pull Request**
+5. **Open** a Pull Request
 
-### Contribution Guidelines
-
-- Write clear, concise commit messages
-- Follow existing code style and conventions
-- Test your changes thoroughly
-- Update documentation if needed
-- Add comments for complex logic
+### Development Guidelines
+- Follow PEP 8 style guidelines
+- Write clear commit messages
+- Add tests for new features
+- Update documentation
 
 ---
 
-## 📄 License
+## 📜 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### MIT License Summary
+```
+MIT License
 
-✅ Commercial use  
-✅ Modification  
-✅ Distribution  
-✅ Private use  
+Copyright (c) 2025 Satendra Goswami
+
+Permission is hereby granted, free of charge, to any person obtaining a copy...
+```
 
 ---
 
 ## 💬 Support
 
-### Need Help?
+### Get Help
 
-- 📖 **Documentation**: Check [PASSWORD_MANAGEMENT_SYSTEM.md](PASSWORD_MANAGEMENT_SYSTEM.md) for detailed user management guide
+- 📖 **Documentation**: Check this README and code comments
 - 🐛 **Bug Reports**: [Open an issue](https://github.com/satendravoice/Attendancify-with-login/issues)
 - 💡 **Feature Requests**: [Submit a request](https://github.com/satendravoice/Attendancify-with-login/issues)
 - 📧 **Contact**: Reach out via Instagram (below)
@@ -442,8 +394,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ### Satendra Goswami
 
-[![Instagram](https://img.shields.io/badge/Instagram-@satendragoswamii-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/satendragoswamii/)
-[![GitHub](https://img.shields.io/badge/GitHub-satendravoice-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/satendravoice)
+[![![Instagram](https://img.shields.io/badge/Instagram-@satendragoswamii-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/satendragoswamii/)
+[![![GitHub](https://img.shields.io/badge/GitHub-satendravoice-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/satendravoice)
 
 *Professional Python Developer | AI Enthusiast | EdTech Innovator*
 
