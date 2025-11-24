@@ -525,6 +525,6 @@ ALTER TABLE users ADD COLUMN password_plain VARCHAR(255);
 ---
 
 **Date:** 2025-10-18  
-**Developer:** AI Assistant  
+**Developer:** Satendra Goswami
 **Version:** 3.0 - Password Management System  
 **Status:** COMPLETE ✅
