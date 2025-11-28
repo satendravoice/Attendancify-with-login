@@ -11,6 +11,8 @@
 
 **Automated, Accurate, and Intelligent Attendance Management for Modern Education**
 
+Live demo: https://zoomattendancify.pythonanywhere.com/
+
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Live Demo](#-live-demo) • [Documentation](#-documentation)
 
 </div>
