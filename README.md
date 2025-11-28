@@ -90,7 +90,8 @@ Contributions are welcome! Fork the repo, create a feature branch, and submit a 
 
 ## 📜 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+Attendancify License (Non-Commercial Use Only) - AGPL-3.see [LICENSE](LICENSE) file 
+**⚠️ COMMERCIAL USE PROHIBITED** - Any commercial use of this software without written permission is strictly forbidden and will result in legal action.for details.
 
 ## 👨‍💻 Developer
 
